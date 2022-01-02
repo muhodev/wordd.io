@@ -1,3 +1,9 @@
+import { AppLayout } from "components";
+
 export default function Home(props) {
-  return <div>Home</div>;
+  return (
+    <AppLayout>
+      <div>Home</div>
+    </AppLayout>
+  );
 }

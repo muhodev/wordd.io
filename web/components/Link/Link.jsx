@@ -1,9 +1,9 @@
-import { Link as RouterLink } from "react-router-dom";
+import NextLink from "next/link";
 
 export function Link({ href, children, ...rest }) {
   return (
-    <RouterLink to={href} {...rest}>
+    <NextLink href={href} {...rest}>
       {children}
-    </RouterLink>
+    </NextLink>
   );
 }
