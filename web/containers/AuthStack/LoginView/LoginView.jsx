@@ -1,9 +1,49 @@
-import { Button, Group, TextInput, Text, PasswordInput } from "@mantine/core";
+import {
+  Button,
+  Group,
+  TextInput,
+  Text,
+  PasswordInput,
+  Alert,
+} from "@mantine/core";
 import { useModals } from "@mantine/modals";
-import { FiMail, FiLock } from "react-icons/fi";
+import { FiMail, FiLock, FiXCircle } from "react-icons/fi";
+import { useFormik } from "formik";
 
-export function LoginView({ context, id }) {
+import { useLoginMutation } from "hooks";
+import validationSchema from "./validationSchema";
+
+export function LoginView() {
   const modals = useModals();
+  const loginMutation = useLoginMutation();
+
+  const onSubmitHandler = ({ email, password }) => {
+    loginMutation.mutate(
+      { email, password },
+      {
+        onSuccess: (response) => {
+          console.log("Response", response);
+        },
+        onError: (error) => {
+          console.log("Error", error?.response, error?.message);
+        },
+      }
+    );
+  };
+
+  const {
+    values,
+    isValid,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+  } = useFormik({
+    initialValues: { email: "", password: "" },
+    onSubmit: onSubmitHandler,
+    validationSchema,
+  });
 
   const openRegisterModal = () => {
     modals.openContextModal("signup", {
@@ -18,12 +58,30 @@ export function LoginView({ context, id }) {
 
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Group direction="column" spacing="lg">
+          {loginMutation.isError && (
+            <Alert
+              icon={<FiXCircle />}
+              style={{ width: "100%" }}
+              className="w-full"
+              title="Error"
+              color="red"
+            >
+              {loginMutation?.error?.response?.data?.message ||
+                loginMutation?.error?.message ||
+                "Unknow Error"}
+            </Alert>
+          )}
           <TextInput
             style={{ width: "100%" }}
             label="Email"
             required
+            name="email"
+            value={values?.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors?.email && touched?.email && errors?.email}
             variant="filled"
             icon={<FiMail />}
           />
@@ -32,10 +90,22 @@ export function LoginView({ context, id }) {
             className="w-full"
             label="Password"
             required
+            name="password"
+            value={values?.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors?.password && touched?.password && errors?.password}
             variant="filled"
             icon={<FiLock />}
           />
-          <Button fullWidth>Log In</Button>
+          <Button
+            loading={loginMutation?.isLoading}
+            type="submit"
+            fullWidth
+            disabled={!isValid}
+          >
+            Log In
+          </Button>
           <Group spacing="xs">
             <Text color="gray" size="sm">
               Don't have an account?
