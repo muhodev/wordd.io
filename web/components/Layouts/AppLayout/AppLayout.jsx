@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AppShell,
   Burger,
@@ -9,15 +10,38 @@ import {
   useMantineTheme,
   Group,
 } from "@mantine/core";
-import { useState } from "react";
+import { useModals } from "@mantine/modals";
 
 import { Logo } from "components";
 import { MainLinks, User } from "./index";
 import { CreateButton } from "./CreateButton";
 
 export function AppLayout(props) {
+  const modals = useModals();
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
+
+  const openLoginModal = () => {
+    modals.openContextModal("login", {
+      title: (
+        <span>
+          Log in to <strong>wordd.io</strong>
+        </span>
+      ),
+      onClose: () => modals.closeAll(),
+    });
+  };
+
+  const openRegisterModal = () => {
+    modals.openContextModal("signup", {
+      title: (
+        <span>
+          Join <strong>wordd.io</strong>
+        </span>
+      ),
+      onClose: () => modals.closeAll(),
+    });
+  };
 
   return (
     <AppShell
@@ -58,9 +82,11 @@ export function AppLayout(props) {
               </div>
               <Group>
                 <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                  <Button variant="default">Log In</Button>
+                  <Button variant="default" onClick={openLoginModal}>
+                    Log In
+                  </Button>
                 </MediaQuery>
-                <Button>Sign Up</Button>
+                <Button onClick={openRegisterModal}>Sign Up</Button>
               </Group>
             </div>
           </div>

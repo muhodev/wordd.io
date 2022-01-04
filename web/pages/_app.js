@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { MantineProvider, ColorSchemeProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 
-import { LoginView } from "containers";
+import { LoginView, RegisterView } from "containers";
 import "styles/index.css";
 
 const client = new QueryClient({
@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
         }}
       >
         <ColorSchemeProvider>
-          <ModalsProvider modals={{ login: LoginView }}>
+          <ModalsProvider modals={{ login: LoginView, signup: RegisterView }}>
             <Component {...pageProps} />
           </ModalsProvider>
         </ColorSchemeProvider>

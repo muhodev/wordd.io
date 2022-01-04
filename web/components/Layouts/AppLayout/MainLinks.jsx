@@ -26,7 +26,7 @@ function MainLink({ icon, color, label, url }) {
   const { classes } = useStyles();
 
   return (
-    <UnstyledButton as className={classes.button}>
+    <UnstyledButton className={classes.button}>
       <Link href={url}>
         <Group>
           <ThemeIcon color={color} variant="light">
