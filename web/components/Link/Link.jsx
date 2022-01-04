@@ -1,9 +1,10 @@
 import NextLink from "next/link";
+import { Text } from "@mantine/core";
 
-export function Link({ href, children, ...rest }) {
+export function Link({ href, children, color, inherit, style, ...rest }) {
   return (
     <NextLink href={href} {...rest}>
-      {children}
+      <a style={style}>{children}</a>
     </NextLink>
   );
 }

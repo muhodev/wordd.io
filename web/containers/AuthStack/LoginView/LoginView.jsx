@@ -1,3 +1,3 @@
-export function LoginView(props) {
-  return <div>Login View</div>;
+export function LoginView({ context, id }) {
+  return <div></div>;
 }

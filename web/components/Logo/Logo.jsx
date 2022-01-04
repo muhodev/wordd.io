@@ -1,9 +1,11 @@
+import { Title, Text } from "@mantine/core";
+
 import { Link } from "components";
 
 export function Logo(props) {
   return (
-    <h1 className="font-bold text-lg">
+    <Title order={3}>
       <Link href="/">wordd.io</Link>
-    </h1>
+    </Title>
   );
 }
