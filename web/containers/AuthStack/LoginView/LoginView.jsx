@@ -7,25 +7,28 @@ import {
   Alert,
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
+import { useNotifications } from "@mantine/notifications";
 import { FiMail, FiLock, FiXCircle } from "react-icons/fi";
 import { useFormik } from "formik";
 
-import { useLoginMutation } from "hooks";
+import { useAuth } from "hooks";
 import validationSchema from "./validationSchema";
 
 export function LoginView() {
   const modals = useModals();
-  const loginMutation = useLoginMutation();
+  const { login, loginMutation } = useAuth();
+  const notifications = useNotifications();
 
   const onSubmitHandler = ({ email, password }) => {
-    loginMutation.mutate(
+    login(
       { email, password },
       {
-        onSuccess: (response) => {
-          console.log("Response", response);
-        },
-        onError: (error) => {
-          console.log("Error", error?.response, error?.message);
+        onSuccess: () => {
+          modals.closeAll();
+          notifications.showNotification({
+            title: "Success",
+            message: "Success login 🎉",
+          });
         },
       }
     );

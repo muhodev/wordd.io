@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 
+import { useAuth } from "hooks";
 import { Logo } from "components";
 import { MainLinks, User } from "./index";
 import { CreateButton } from "./CreateButton";
@@ -20,6 +21,7 @@ export function AppLayout(props) {
   const modals = useModals();
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
+  const { isLoggedIn, mounted } = useAuth();
 
   const openLoginModal = () => {
     modals.openContextModal("login", {
@@ -80,14 +82,19 @@ export function AppLayout(props) {
                   <Logo />
                 </Text>
               </div>
-              <Group>
-                <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                  <Button variant="default" onClick={openLoginModal}>
-                    Log In
-                  </Button>
-                </MediaQuery>
-                <Button onClick={openRegisterModal}>Sign Up</Button>
-              </Group>
+              {mounted &&
+                (isLoggedIn ? (
+                  "Profil"
+                ) : (
+                  <Group>
+                    <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+                      <Button variant="default" onClick={openLoginModal}>
+                        Log In
+                      </Button>
+                    </MediaQuery>
+                    <Button onClick={openRegisterModal}>Sign Up</Button>
+                  </Group>
+                ))}
             </div>
           </div>
         </Header>

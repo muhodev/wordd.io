@@ -34,3 +34,13 @@ export const register = catchAsync(async (req, res, next) => {
   });
   createSendToken(newUser, 201, req, res);
 });
+
+export const checkAuth = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  const token = req.token;
+  res.status(200).json({
+    message: "Success",
+    success: true,
+    result: { user, token },
+  });
+});

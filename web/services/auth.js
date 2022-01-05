@@ -25,3 +25,9 @@ export const register = async ({
 
   return res?.data;
 };
+
+export const checkAuth = async () => {
+  const res = await Api.post(`${scope}/check-auth`);
+
+  return res?.data;
+};

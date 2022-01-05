@@ -7,3 +7,9 @@ export default function Home(props) {
     </AppLayout>
   );
 }
+
+export async function getServerSideProps(context) {
+  return {
+    props: {},
+  };
+}

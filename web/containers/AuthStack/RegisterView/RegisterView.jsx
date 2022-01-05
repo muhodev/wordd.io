@@ -7,25 +7,28 @@ import {
   Alert,
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
+import { useNotifications } from "@mantine/notifications";
 import { FiMail, FiLock, FiXCircle } from "react-icons/fi";
 import { useFormik } from "formik";
 
+import { useAuth } from "hooks";
 import validationSchema from "./validationSchema";
-import { useRegisterMutation } from "hooks";
 
 export function RegisterView() {
   const modals = useModals();
-  const registerMutation = useRegisterMutation();
+  const { register, registerMutation } = useAuth();
+  const notifications = useNotifications();
 
   const onSubmitHandler = ({ name, email, password }) => {
-    registerMutation.mutate(
+    register(
       { name, email, password, passwordConfirm: password },
       {
-        onSuccess: (response) => {
-          console.log("Response", response);
-        },
-        onError: (error) => {
-          console.log("Error", error?.response, error?.message);
+        onSuccess: () => {
+          modals.closeAll();
+          notifications.showNotification({
+            title: "Success",
+            message: "Success register 🎉",
+          });
         },
       }
     );
