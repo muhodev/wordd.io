@@ -10,6 +10,11 @@ const phraseSchema = new mongoose.Schema(
         type: String,
       },
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     definition: {
       type: String,
     },
@@ -32,9 +37,11 @@ const phraseSchema = new mongoose.Schema(
     tips: {
       type: String,
     },
-    tag: {
-      type: String,
-    },
+    tag: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );
