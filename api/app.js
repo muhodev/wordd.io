@@ -6,7 +6,7 @@ import hpp from "hpp";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { authRoutes } from "./routes/index.js";
+import { authRoutes, phraseRoutes } from "./routes/index.js";
 import { errorController } from "./controllers/index.js";
 import { AppError } from "./@utils/index.js";
 
@@ -54,6 +54,8 @@ app.use(
 );
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/phrases", phraseRoutes);
+
 app.use("/hello", (req, res, next) => {
   const message = "Hello";
   res.status(200).json({ message });
