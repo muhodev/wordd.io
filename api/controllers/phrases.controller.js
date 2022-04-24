@@ -49,8 +49,7 @@ export const updateOnePhrase = catchAsync(async (req, res, next) => {
 });
 
 export const getOnePhrase = catchAsync(async (req, res, next) => {
-  let query = Phrase.findById(req.params.id);
-  if (popOptions) query = query;
+  let query = Phrase.findOne({ slug: req.params.id });
   const doc = await query;
 
   if (!doc) {

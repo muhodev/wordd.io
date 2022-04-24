@@ -5,3 +5,9 @@ export const getAllPhrases = async (query) => {
 
   return res.data;
 };
+
+export const getOnePhrase = async (id) => {
+  const res = await api.get(`/v1/phrases/${id}`);
+
+  return res.data;
+};
