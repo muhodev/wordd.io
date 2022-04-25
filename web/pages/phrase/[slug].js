@@ -17,7 +17,7 @@ export default function PhraseDetail({ phrase }) {
       <div className="" style={{ minHeight: "calc(100vh - 4rem)" }}>
         <div className="container mx-auto ">
           <div className="py-4 ">
-            <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 py-8 text-left">
+            <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-50 py-8 text-left">
               {phrase?.sentence?.en}
             </h2>
             <div className="py-4 px-4 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg dark:highlight-white/5">
