@@ -1,12 +1,9 @@
 import { array } from "@utils";
+import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
-import { dehydrate, QueryClient, useQuery } from "react-query";
-import { getAllPhrases } from "services/phrases";
 
-export default function Home(props) {
-  const { data } = useQuery("phrases", getAllPhrases);
-  const phrases = Array.isArray(data?.phrases) ? data.phrases : [];
+export default function Home({ phrases }) {
   return (
     <div className="antialiased text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-900">
       <Head>
@@ -44,7 +41,7 @@ export default function Home(props) {
 
           <div className="col"></div>
           <div className="py-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {phrases?.map((phrase) => (
+            {array(phrases)?.map((phrase) => (
               <div className="py-4 px-4 bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg dark:highlight-white/5">
                 <div className="font-bold text-lg">
                   <Link href={`/phrase/${phrase?.slug}`}>
@@ -73,13 +70,17 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps() {
-  const queryClient = new QueryClient();
+  try {
+    const result = await axios.get("/api/phrases");
 
-  await queryClient.prefetchQuery("phrases", getAllPhrases);
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
+    return {
+      props: {
+        phrases: result?.phrases,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {},
+    };
+  }
 }

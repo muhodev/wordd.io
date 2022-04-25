@@ -1,15 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { dehydrate, QueryClient, useQuery } from "react-query";
-import { getOnePhrase } from "services/phrases";
 import { array } from "@utils";
+import axios from "axios";
 
-export default function PhraseDetail(props) {
-  const router = useRouter();
-  const slug = router?.query?.slug;
-  const { data } = useQuery(["phrases", slug], () => getOnePhrase(slug));
-  const phrase = data?.doc;
+export default function PhraseDetail({ phrase }) {
   return (
     <div className="antialiased text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-900">
       <Head>
@@ -86,14 +80,12 @@ export default function PhraseDetail(props) {
 }
 
 export async function getServerSideProps({ params }) {
-  const queryClient = new QueryClient();
   const slug = params.slug;
-
-  await queryClient.prefetchQuery(["phrases", slug], () => getOnePhrase(slug));
+  const result = await axios.get(`/api/phrases/${slug}`);
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
+      phrase: result?.doc,
     },
   };
 }
