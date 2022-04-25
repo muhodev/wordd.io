@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
-import { array } from "@utils";
-import axios from "axios";
+import { array, formatDate } from "@utils";
+
+import mongoClient from "../../lib/mongoClient";
 
 export default function PhraseDetail({ phrase }) {
   return (
@@ -69,7 +70,7 @@ export default function PhraseDetail({ phrase }) {
                 ))}
               </div>
               <time className="text-sm opacity-50 pt-4 block">
-                {new Date(phrase?.createdAt).toLocaleDateString()}
+                {formatDate(phrase?.createdAt)}
               </time>
             </div>
           </div>
@@ -81,11 +82,23 @@ export default function PhraseDetail({ phrase }) {
 
 export async function getServerSideProps({ params }) {
   const slug = params.slug;
-  const result = await axios.get(`/api/phrases/${slug}`);
 
-  return {
-    props: {
-      phrase: result?.doc,
-    },
-  };
+  try {
+    const client = await mongoClient;
+    const db = client.db("wordd");
+    const collection = db.collection("phrases");
+    const phrase = await collection.findOne({ slug });
+
+    return {
+      props: {
+        phrase: JSON.parse(JSON.stringify(phrase)),
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        phrase: {},
+      },
+    };
+  }
 }

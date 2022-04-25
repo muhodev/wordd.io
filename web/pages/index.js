@@ -1,7 +1,8 @@
 import { array } from "@utils";
-import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
+
+import mongoClient from "../lib/mongoClient";
 
 export default function Home({ phrases }) {
   return (
@@ -42,7 +43,10 @@ export default function Home({ phrases }) {
           <div className="col"></div>
           <div className="py-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {array(phrases)?.map((phrase) => (
-              <div className="py-4 px-4 bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg dark:highlight-white/5">
+              <div
+                key={phrase?.slug}
+                className="py-4 px-4 bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg dark:highlight-white/5"
+              >
                 <div className="font-bold text-lg">
                   <Link href={`/phrase/${phrase?.slug}`}>
                     <a className="hover:underline">{phrase?.sentence?.en}</a>
@@ -71,16 +75,21 @@ export default function Home({ phrases }) {
 
 export async function getServerSideProps() {
   try {
-    const result = await axios.get("/api/phrases");
+    const client = await mongoClient;
+    const db = client.db("wordd");
+    const collection = db.collection("phrases");
+    const phrases = await collection.find({}).toArray();
 
     return {
       props: {
-        phrases: result?.phrases,
+        phrases: JSON.parse(JSON.stringify(phrases)),
       },
     };
   } catch (error) {
     return {
-      props: {},
+      props: {
+        phrases: [],
+      },
     };
   }
 }
