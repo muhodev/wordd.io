@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { BASE_URL } from "@constants";
 
-const api = axios.create({ baseURL: BASE_URL, withCredentials: true });
+const api = axios.create({ withCredentials: true });
 
 api.interceptors.response.use(undefined, (error) => {
   if (typeof error.response !== "undefined") {

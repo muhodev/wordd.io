@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getOnePhrase } from "services/phrases";
+import { array } from "@utils";
 
 export default function PhraseDetail(props) {
   const router = useRouter();
@@ -65,7 +66,7 @@ export default function PhraseDetail(props) {
                 Etiketler:
               </h2>
               <div className="text-sm space-x-2">
-                {phrase?.tag?.map((tag) => (
+                {array(phrase?.tag)?.map((tag) => (
                   <Link href="/" key={tag}>
                     <a className="font-semibold text-indigo-500 dark:text-indigo-400  ">
                       #{tag}

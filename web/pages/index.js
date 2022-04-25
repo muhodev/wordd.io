@@ -1,3 +1,4 @@
+import { array } from "@utils";
 import Head from "next/head";
 import Link from "next/link";
 import { dehydrate, QueryClient, useQuery } from "react-query";
@@ -54,7 +55,7 @@ export default function Home(props) {
                   {phrase?.sentence?.tr}
                 </div>
                 <div className="text-sm pt-6 space-x-2">
-                  {phrase?.tag?.map((tag) => (
+                  {array(phrase?.tag)?.map((tag) => (
                     <Link href="/">
                       <a className="font-semibold text-indigo-500 dark:text-indigo-400">
                         #{tag}
